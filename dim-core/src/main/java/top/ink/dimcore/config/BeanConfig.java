@@ -21,8 +21,10 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.kafka.core.KafkaAdmin;
+import top.ink.dimcore.handler.chain.*;
 import top.ink.dimcore.util.Register;
 
+import javax.annotation.Resource;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -62,6 +64,18 @@ public class BeanConfig {
 
     @Value("${dim.nr.timeout}")
     private Integer nrTimeout;
+
+//    @Resource
+//    private TextMessageHandle textMessageHandle;
+//
+//    @Resource
+//    private InitMessageHandle initMessageHandle;
+//
+//    @Resource
+//    private HeartBeatMessageHandle heartBeatMessageHandle;
+//
+//    @Resource
+//    private AckMessageHandle ackMessageHandle;
 
     public Integer getNrTimeout() {
         return nrTimeout;
@@ -115,5 +129,16 @@ public class BeanConfig {
             e.printStackTrace();
             return null;
         }
+    }
+
+    @Bean
+    @DependsOn("SpringBeanFactory")
+    public DimMessageHandleChain dimMessageHandleChain() {
+        DimMessageHandleChain dimMessageHandleChain = new DimMessageHandleChain();
+        dimMessageHandleChain.addDimMessageHandle(new InitMessageHandle());
+        dimMessageHandleChain.addDimMessageHandle(new TextMessageHandle());
+        dimMessageHandleChain.addDimMessageHandle(new HeartBeatMessageHandle());
+        dimMessageHandleChain.addDimMessageHandle(new AckMessageHandle());
+        return dimMessageHandleChain;
     }
 }

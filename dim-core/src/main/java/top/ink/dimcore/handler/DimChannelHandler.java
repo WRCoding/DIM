@@ -8,7 +8,9 @@ import io.netty.handler.timeout.IdleState;
 import io.netty.handler.timeout.IdleStateEvent;
 import lombok.extern.slf4j.Slf4j;
 import top.ink.dimcore.config.BeanConfig;
+import top.ink.dimcore.entity.message.Message;
 import top.ink.dimcore.entity.message.systemmessage.InitMessage;
+import top.ink.dimcore.handler.chain.DimMessageHandleChain;
 import top.ink.dimcore.server.session.cache.SessionCache;
 import top.ink.dimcore.util.SpringBeanFactory;
 
@@ -47,6 +49,13 @@ public class DimChannelHandler extends ChannelInboundHandlerAdapter {
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
         super.channelActive(ctx);
         log.info("ChatMessageHandler channelActive: {}", ctx.channel());
+    }
+
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+        DimMessageHandleChain dimMessageHandleChain = SpringBeanFactory.getBean(DimMessageHandleChain.class);
+        dimMessageHandleChain.handleMessage(ctx, (Message) msg);
+        super.channelRead(ctx, msg);
     }
 
     @Override

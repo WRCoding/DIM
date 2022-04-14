@@ -43,7 +43,7 @@ public class MessageChannelInit extends ChannelInitializer<NioSocketChannel> {
         nioSocketChannel.pipeline().addLast(LOGGING_HANDLER);
         nioSocketChannel.pipeline().addLast(new IdleStateHandler(11, 0, 0));
         nioSocketChannel.pipeline().addLast(new DimChannelHandler());
-        nioSocketChannel.pipeline().addLast(chatMessageHandler);
-        nioSocketChannel.pipeline().addLast(systemMessageHandler);
+//        nioSocketChannel.pipeline().addLast(chatMessageHandler);
+//        nioSocketChannel.pipeline().addLast(systemMessageHandler);
     }
 }
