@@ -1,4 +1,6 @@
 # DIM
+![image](https://user-images.githubusercontent.com/34570474/172418057-5335cd65-1cf4-4513-a0bb-5a98f53f94d9.png)
+
 DIM-基于Electron，Netty和SpringBoot的分布式IM
 
 
